@@ -21,12 +21,18 @@ ring2poly = function(ring){
 }
 
 arcJson = function(url, idname){
+  message("Getting data from API...")
   arc_json_data = fromJSON(url)
+  if("error" %in% names(arc_json_data)){
+    stop(paste(arc_json_data$error$message, arc_json_data$error$details,sep=": "))
+  }
+  message("Data successfully read. Processing...")
   poly.list = list()
   attrib.list = list()
   for(i in 1:length(arc_json_data["features"][[1]][["geometry"]][["rings"]])){
     ring = arc_json_data["features"][[1]][["geometry"]][["rings"]][[i]]
     attribs = arc_json_data['features'][[1]]["attributes"][[1]][i,]
+    message("Country: ", attribs$CNTRYNAMEE,"; Year: ", attribs$SVYYEAR,"; Region: ", attribs$DHSREGEN,"; Level: ", attribs$LEVELRNK)
     attrib.list[[i]] = attribs
     if(typeof(ring)=="double"){
       P1 = ring2poly(ring)

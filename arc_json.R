@@ -22,7 +22,9 @@ ring2poly = function(ring){
 
 arcJson = function(url, idname){
   message("Getting data from API...")
-  arc_json_data = fromJSON(url)
+  tmp = tempfile()
+  download.file(url, tmp)
+  arc_json_data = fromJSON(tmp)
   if("error" %in% names(arc_json_data)){
     stop(paste(arc_json_data$error$message, arc_json_data$error$details,sep=": "))
   }

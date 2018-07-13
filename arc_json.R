@@ -20,7 +20,7 @@ ring2poly = function(ring){
   return(P1)
 }
 
-arcJson = function(url){
+arcJson = function(url, idname){
   arc_json_data = fromJSON(url)
   poly.list = list()
   attrib.list = list()
@@ -30,7 +30,7 @@ arcJson = function(url){
     attrib.list[[i]] = attribs
     if(typeof(ring)=="double"){
       P1 = ring2poly(ring)
-      Ps1 = Polygons(list(P1), ID = attribs["OBJECTID"][[1]])
+      Ps1 = Polygons(list(P1), ID = attribs[idname][[1]])
       poly.list[[i]] = Ps1
     }else{
       subpoly.list = list()
@@ -39,7 +39,7 @@ arcJson = function(url){
         P1 = ring2poly(subring)
         subpoly.list[[j]] = P1
       }
-      Ps1 = Polygons(subpoly.list, ID = attribs["OBJECTID"][[1]])
+      Ps1 = Polygons(subpoly.list, ID = attribs[idname][[1]])
       poly.list[[i]] = Ps1
     }
   }
@@ -62,7 +62,7 @@ dhsQuery = function(query){
     "f=json",
     "&where=",query,
     "&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=DHSCC%2CCNTRYNAMEE%2CSVYTYPE%2CSVYYEAR%2CDHSREGEN%2CREGNOTES%2COBJECTID%2CSVYNOTES%2CSVYID%2CLEVELRNK%2CLEVELNA%2CColorAdjust%2CSvy_Map%2CSTATCOM%2CNATL_DATA&returnGeometry=true&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&orderByFields=SVYYEAR%2CSVYTYPE%2CSVYID%2CLEVELRNK&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&resultOffset=&resultRecordCount=")
-  SPDF = arcJson(url)
+  SPDF = arcJson(url,"OBJECTID")
   return(SPDF)
 }
 
